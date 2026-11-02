@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102b46">
+  <meta name="description" content="اختبار تفاعلي في الرياضيات للصف التاسع - 20 سؤالًا مع تصحيح تلقائي">
+  <title>اختبار الرياضيات | الصف التاسع</title>
+  <style>
+    :root {
+      --navy: #102b46;
+      --navy-2: #183d5e;
+      --blue: #1686bb;
+      --blue-soft: #eaf6fc;
+      --ink: #172638;
+      --muted: #637386;
+      --line: #e1e8ef;
+      --paper: #ffffff;
+      --bg: #f2f6fa;
+      --green: #168451;
+      --green-soft: #eaf7f0;
+      --red: #c23b45;
+      --red-soft: #fff0f1;
+      --shadow: 0 14px 40px rgba(16,43,70,.09);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top right, #e4f2fa 0, transparent 34rem), var(--bg);
+      color: var(--ink);
+      font-family: Tahoma, Arial, sans-serif;
+      line-height: 1.8;
+    }
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; }
+    .topbar {
+      background: linear-gradient(125deg, var(--navy), var(--navy-2));
+      color: #fff;
+      padding: 23px 18px 64px;
+    }
+    .topbar-inner { max-width: 950px; margin: auto; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+    .brand { display:flex; align-items:center; gap:13px; }
+    .brand-icon { width:46px; height:46px; border-radius:15px; display:grid; place-items:center; background:rgba(255,255,255,.13); font-size:24px; }
+    .brand-title { font-weight:800; font-size:18px; }
+    .brand-sub { font-size:12px; color:#c8d8e7; margin-top:1px; }
+    .top-pill { border:1px solid rgba(255,255,255,.25); color:#eaf4fc; border-radius:100px; padding:6px 13px; font-size:12px; white-space:nowrap; }
+    .shell { max-width: 950px; margin: -43px auto 42px; padding: 0 16px; }
+    .panel { background:var(--paper); border:1px solid rgba(220,230,239,.8); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; }
+    .welcome { padding: clamp(24px,5vw,48px); text-align:center; }
+    .eyebrow { display:inline-flex; align-items:center; gap:7px; color:var(--blue); background:var(--blue-soft); border-radius:100px; padding:5px 13px; font-size:12px; font-weight:700; }
+    h1 { font-size: clamp(27px,5vw,40px); line-height:1.35; color:var(--navy); margin:18px 0 8px; }
+    .lead { color:var(--muted); max-width:590px; margin:0 auto 24px; }
+    .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:26px auto; max-width:620px; }
+    .stat { background:#f7fafd; border:1px solid var(--line); border-radius:15px; padding:13px 8px; }
+    .stat strong { display:block; color:var(--navy); font-size:22px; line-height:1.4; }
+    .stat span { color:var(--muted); font-size:12px; }
+    .name-wrap { text-align:right; max-width:510px; margin:24px auto 16px; }
+    label { display:block; font-size:14px; font-weight:700; margin-bottom:7px; }
+    input[type="text"], textarea {
+      width:100%; border:1px solid #d7e0e9; background:#fff; color:var(--ink); border-radius:13px; padding:13px 15px; outline:none; transition:.2s;
+    }
+    input[type="text"]:focus, textarea:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(22,134,187,.12); }
+    .hint { color:var(--muted); font-size:12px; margin-top:6px; }
+    .btn { border:0; border-radius:13px; padding:12px 22px; font-weight:800; transition:transform .15s, filter .15s; }
+    .btn:hover { filter:brightness(1.04); transform:translateY(-1px); }
+    .btn:disabled { cursor:not-allowed; opacity:.5; transform:none; }
+    .btn-primary { background:var(--blue); color:#fff; box-shadow:0 7px 17px rgba(22,134,187,.2); }
+    .btn-dark { background:var(--navy); color:#fff; }
+    .btn-light { background:#eef3f7; color:var(--navy); }
+    .btn-danger { background:#fff0f1; color:var(--red); }
+    .welcome-actions { margin-top:20px; }
+    .exam-head { padding:22px 25px 16px; border-bottom:1px solid var(--line); }
+    .exam-meta { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+    .student-label { font-size:13px; color:var(--muted); }
+    .student-label b { color:var(--navy); }
+    .count-pill { background:var(--blue-soft); color:#126b97; border-radius:100px; padding:5px 12px; font-size:12px; font-weight:800; }
+    .progress-row { display:flex; align-items:center; gap:12px; margin-top:15px; }
+    .progress-track { height:8px; background:#e9eff4; border-radius:99px; flex:1; overflow:hidden; }
+    .progress-fill { height:100%; width:0; background:linear-gradient(90deg,#1686bb,#45b3d6); border-radius:99px; transition:width .25s; }
+    .progress-text { color:var(--muted); font-size:12px; white-space:nowrap; }
+    .question-layout { display:grid; grid-template-columns:minmax(0,1fr) 205px; min-height:420px; }
+    .question-main { padding:clamp(20px,4vw,35px); }
+    .question-side { border-right:1px solid var(--line); background:#fbfdff; padding:22px 17px; }
+    .section-chip { display:inline-flex; padding:4px 11px; border-radius:100px; background:#f0f4f8; color:#53677b; font-size:11px; font-weight:800; margin-bottom:16px; }
+    .section-chip.essay { color:#825ba6; background:#f5effb; }
+    .q-number { color:var(--blue); font-size:13px; font-weight:800; }
+    .q-title { font-size:clamp(18px,3vw,22px); line-height:1.9; font-weight:800; color:var(--navy); margin:5px 0 22px; }
+    .math-display { direction:ltr; unicode-bidi:isolate; text-align:center; overflow-x:auto; max-width:100%; margin:12px auto 17px; padding:7px 10px; color:#132b44; background:#f7fafc; border:1px solid #e3ebf2; border-radius:12px; font-size:clamp(19px,3.2vw,24px); }
+    .math-inline { direction:ltr; unicode-bidi:isolate; white-space:nowrap; color:#132b44; }
+    .option-text { direction:ltr; unicode-bidi:isolate; text-align:center; font-size:15px; font-weight:700; min-width:0; }
+    .option-text mjx-container { max-width:100%; }
+    .q-title mjx-container[display="true"] { margin:0.45em 0 !important; }
+    .review-q .math-display { font-size:18px; }
+    .options { display:grid; grid-template-columns:1fr 1fr; gap:11px; }
+    .option { display:flex; align-items:center; gap:11px; border:1px solid #dfe7ee; padding:13px 14px; border-radius:14px; cursor:pointer; background:#fff; min-height:58px; transition:.15s; }
+    .option:hover { border-color:#9bcce2; background:#f8fcff; }
+    .option.selected { border:2px solid var(--blue); background:var(--blue-soft); padding:12px 13px; }
+    .option input { position:absolute; opacity:0; pointer-events:none; }
+    .option-letter { flex:none; display:grid; place-items:center; width:30px; height:30px; border-radius:9px; background:#eef3f7; color:#53677b; font-weight:800; font-size:13px; }
+    .option.selected .option-letter { color:#fff; background:var(--blue); }
+    .option-text { font-size:15px; font-weight:700; }
+    .essay-box { border:1px solid #e3e8ee; border-radius:16px; padding:16px; background:#fcfdff; }
+    .essay-box textarea { min-height:110px; resize:vertical; margin-bottom:15px; }
+    .answer-final { max-width:330px; }
+    .answer-final input { direction:ltr; text-align:right; }
+    .side-title { font-size:13px; font-weight:800; color:var(--navy); margin-bottom:12px; }
+    .q-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:7px; }
+    .q-dot { border:1px solid var(--line); background:#fff; color:#718094; height:34px; border-radius:9px; font-size:12px; font-weight:700; }
+    .q-dot.current { background:var(--navy); color:#fff; border-color:var(--navy); }
+    .q-dot.answered { border-color:#8ac9ad; background:#eff9f3; color:var(--green); }
+    .q-dot.current.answered { background:var(--navy); color:#fff; }
+    .legend { margin-top:17px; display:grid; gap:8px; color:var(--muted); font-size:11px; }
+    .legend span { display:flex; align-items:center; gap:7px; }
+    .legend i { width:10px; height:10px; border-radius:3px; background:#eff9f3; border:1px solid #8ac9ad; }
+    .legend i.now { background:var(--navy); border-color:var(--navy); }
+    .nav-actions { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:18px 25px; border-top:1px solid var(--line); background:#fcfdff; }
+    .nav-right, .nav-left { display:flex; gap:9px; align-items:center; }
+    .mobile-map { display:none; }
+    .result { padding:clamp(22px,4vw,38px); }
+    .score-hero { text-align:center; padding:22px 12px 30px; border-bottom:1px solid var(--line); }
+    .score-circle { width:145px; height:145px; border-radius:50%; margin:20px auto 12px; display:grid; place-content:center; background:conic-gradient(var(--blue) var(--score,0%), #e9f0f5 0); position:relative; }
+    .score-circle::before { content:""; position:absolute; inset:11px; border-radius:50%; background:#fff; }
+    .score-content { position:relative; z-index:1; }
+    .score-number { font-size:38px; font-weight:900; color:var(--navy); line-height:1.2; }
+    .score-outof { color:var(--muted); font-size:13px; }
+    .result-stats { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-top:16px; }
+    .result-stat { border-radius:12px; padding:8px 14px; font-size:13px; font-weight:800; }
+    .result-stat.good { color:var(--green); background:var(--green-soft); }
+    .result-stat.bad { color:var(--red); background:var(--red-soft); }
+    .review-head { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin:25px 0 13px; }
+    .review-head h2 { margin:0; color:var(--navy); font-size:20px; }
+    .review-card { border:1px solid var(--line); border-radius:15px; padding:15px 17px; margin-bottom:10px; }
+    .review-card.correct { border-right:4px solid var(--green); }
+    .review-card.wrong { border-right:4px solid var(--red); }
+    .review-q { font-weight:800; color:var(--navy); margin-bottom:8px; }
+    .review-detail { font-size:13px; color:var(--muted); margin-top:4px; }
+    .review-answer { font-weight:800; color:var(--green); }
+    .review-explain { font-size:12px; color:#526477; background:#f7fafc; padding:8px 10px; border-radius:9px; margin-top:9px; }
+    .result-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:22px; }
+    .footnote { text-align:center; color:#8694a3; font-size:11px; padding:18px 8px 0; }
+    .toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:#17334e; color:white; padding:10px 16px; border-radius:11px; box-shadow:var(--shadow); font-size:13px; z-index:10; display:none; }
+    [hidden] { display:none !important; }
+    @media (max-width:720px) {
+      .topbar { padding-bottom:58px; }
+      .top-pill { display:none; }
+      .question-layout { grid-template-columns:1fr; }
+      .question-side { display:none; }
+      .mobile-map { display:block; padding:0 20px 18px; }
+      .mobile-map .q-grid { grid-template-columns:repeat(10,1fr); }
+      .q-dot { height:30px; font-size:11px; }
+      .options { grid-template-columns:1fr; }
+      .nav-actions { padding:14px 16px; }
+      .nav-actions .btn { padding:10px 13px; font-size:13px; }
+      .stats { gap:7px; }
+      .stat { padding:10px 4px; }
+      .stat strong { font-size:19px; }
+    }
+    @media (max-width:390px) {
+      .mobile-map .q-grid { grid-template-columns:repeat(5,1fr); }
+      .brand-title { font-size:16px; }
+    }
+    @media print {
+      body { background:#fff; }
+      .topbar, .result-actions, .footnote, .nav-actions { display:none !important; }
+      .shell { margin:0 auto; max-width:none; }
+      .panel { box-shadow:none; border:0; }
+      .review-card { break-inside:avoid; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-icon">∑</div>
+        <div>
+          <div class="brand-title">اختبار الرياضيات</div>
+          <div class="brand-sub">الصف التاسع · اختبار تفاعلي</div>
+        </div>
+      </div>
+      <div class="top-pill">20 سؤالًا · الدرجة من 20</div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section id="welcome" class="panel welcome">
+      <span class="eyebrow">✦ تحدَّ مهاراتك الرياضية</span>
+      <h1>هل أنت مستعد للاختبار؟</h1>
+      <p class="lead">اختبار في الكسور والكسور الجبرية وتبسيط المقادير وحل المعادلات والمسائل التطبيقية. اقرأ كل سؤال جيدًا ثم اختر إجابتك أو اكتب الحل.</p>
+      <div class="stats">
+        <div class="stat"><strong>20</strong><span>سؤالًا</span></div>
+        <div class="stat"><strong>20</strong><span>درجة نهائية</span></div>
+        <div class="stat"><strong>3</strong><span>أسئلة مقالية</span></div>
+      </div>
+      <div class="name-wrap">
+        <label for="studentName">اسم الطالب (اختياري)</label>
+        <input id="studentName" type="text" maxlength="60" placeholder="اكتب اسمك هنا">
+        <div class="hint">كل سؤال بدرجة واحدة. ستظهر نتيجتك بعد إنهاء الاختبار.</div>
+      </div>
+      <div class="welcome-actions"><button id="startBtn" class="btn btn-primary">ابدأ الاختبار <span aria-hidden="true">←</span></button></div>
+    </section>
+
+    <section id="exam" class="panel" hidden>
+      <div class="exam-head">
+        <div class="exam-meta">
+          <div class="student-label">الطالب: <b id="studentDisplay">طالب</b></div>
+          <div class="count-pill"><span id="answeredCount">0</span> / 20 تمت الإجابة</div>
+        </div>
+        <div class="progress-row">
+          <div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
+          <div class="progress-text" id="progressText">السؤال 1 من 20</div>
+        </div>
+      </div>
+      <div class="question-layout">
+        <div class="question-main">
+          <div id="sectionChip" class="section-chip">اختيار من متعدد</div>
+          <div class="q-number" id="qNumber">السؤال 1</div>
+          <div class="q-title" id="qTitle"></div>
+          <div id="answerArea"></div>
+        </div>
+        <aside class="question-side">
+          <div class="side-title">التنقل بين الأسئلة</div>
+          <div id="questionGrid" class="q-grid"></div>
+          <div class="legend"><span><i class="now"></i> السؤال الحالي</span><span><i></i> تمت الإجابة</span></div>
+        </aside>
+      </div>
+      <div class="mobile-map">
+        <div class="side-title">أرقام الأسئلة</div>
+        <div id="mobileQuestionGrid" class="q-grid"></div>
+      </div>
+      <div class="nav-actions">
+        <div class="nav-right"><button id="prevBtn" class="btn btn-light">السابق</button></div>
+        <div class="nav-left">
+          <button id="nextBtn" class="btn btn-primary">التالي</button>
+          <button id="finishBtn" class="btn btn-dark" hidden>إنهاء الاختبار</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="results" class="panel result" hidden>
+      <div class="score-hero">
+        <span class="eyebrow">✦ اكتمل الاختبار</span>
+        <h1 id="resultGreeting">أحسنت!</h1>
+        <div class="score-circle" id="scoreCircle" style="--score:0%">
+          <div class="score-content"><div class="score-number" id="scoreNumber">0</div><div class="score-outof">من 20 درجة</div></div>
+        </div>
+        <div id="resultMessage" class="lead">هذه نتيجتك النهائية.</div>
+        <div class="result-stats">
+          <div class="result-stat good">إجابات صحيحة: <b id="correctCount">0</b></div>
+          <div class="result-stat bad">إجابات خاطئة: <b id="wrongCount">0</b></div>
+        </div>
+      </div>
+      <div class="review-head"><h2>مراجعة الإجابات</h2><span class="count-pill" id="reviewName">نتيجة الطالب</span></div>
+      <div id="reviewList"></div>
+      <div class="result-actions">
+        <button id="printBtn" class="btn btn-dark">طباعة النتيجة</button>
+        <button id="copyBtn" class="btn btn-primary">نسخ النتيجة</button>
+        <button id="restartBtn" class="btn btn-light">إعادة الاختبار</button>
+      </div>
+    </section>
+    <div class="footnote">اختبار تدريبي تفاعلي · الصف التاسع</div>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+      chtml: { scale: 1.08 },
+      options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  <script>
+    const questions = [
+      { type:'mcq', section:'العمليات على الكسور', title:'أوجد أبسط صورة:<div class="math-display">\\[\\frac{11}{18}-\\frac{5}{12}+\\frac{1}{9}\\]</div>', options:['\\(\\frac{11}{36}\\)','\\(\\frac{13}{36}\\)','\\(\\frac{7}{18}\\)','\\(\\frac{5}{12}\\)'], correct:0, explain:'المقام المشترك الأصغر 36؛ إذن 22/36 − 15/36 + 4/36 = 11/36.' },
+      { type:'mcq', section:'العمليات على الكسور', title:'احسب واختصر:<div class="math-display">\\[\\frac{7}{10}-\\frac{5}{12}+\\frac{1}{15}\\]</div>', options:['\\(\\frac{1}{4}\\)','\\(\\frac{7}{20}\\)','\\(\\frac{3}{10}\\)','\\(\\frac{2}{5}\\)'], correct:1, explain:'بتوحيد المقامات إلى 60 نحصل على (42 − 25 + 4)/60 = 21/60 = 7/20.' },
+      { type:'mcq', section:'الكسور الجبرية', title:'اختصر المقدار الجبري:<div class="math-display">\\[\\frac{5\\text{س}}{12}-\\frac{\\text{س}}{8}+\\frac{\\text{س}}{6}\\]</div>', options:['\\(\\frac{9\\text{س}}{24}\\)','\\(\\frac{11\\text{س}}{24}\\)','\\(\\frac{13\\text{س}}{24}\\)','\\(\\frac{5\\text{س}}{12}\\)'], correct:1, explain:'المقام المشترك 24؛ فنحصل على (10س − 3س + 4س)/24 = 11س/24.' },
+      { type:'mcq', section:'الكسور الجبرية', title:'أوجد أبسط صورة:<div class="math-display">\\[\\frac{3\\text{س}+2}{4}-\\frac{\\text{س}-1}{6}\\]</div>', options:['\\(\\frac{7\\text{س}+8}{12}\\)','\\(\\frac{5\\text{س}+8}{12}\\)','\\(\\frac{7\\text{س}+4}{12}\\)','\\(\\frac{9\\text{س}+8}{12}\\)'], correct:0, explain:'بتوحيد المقامات: [3(3س + 2) − 2(س − 1)]/12 = (7س + 8)/12.' },
+      { type:'mcq', section:'الكسور الجبرية', title:'اختصر:<div class="math-display">\\[\\frac{5}{2\\text{س}}+\\frac{1}{3\\text{س}}\\]</div>', options:['\\(\\frac{17}{6\\text{س}}\\)','\\(\\frac{16}{6\\text{س}}\\)','\\(\\frac{6}{5\\text{س}}\\)','\\(\\frac{17}{5\\text{س}}\\)'], correct:0, explain:'المقام المشترك 6س؛ فيكون الناتج 15/(6س) + 2/(6س) = 17/(6س).' },
+      { type:'mcq', section:'الكسور الجبرية', title:'أوجد أبسط صورة:<div class="math-display">\\[\\frac{3}{\\text{س}-2}+\\frac{2}{\\text{س}+2}\\]</div>', options:['\\(\\frac{5\\text{س}+2}{\\text{س}^2-4}\\)','\\(\\frac{5\\text{س}-2}{\\text{س}^2-4}\\)','\\(\\frac{5\\text{س}+2}{\\text{س}^2+4}\\)','\\(\\frac{\\text{س}+2}{\\text{س}^2-4}\\)'], correct:0, explain:'المقام المشترك (س − 2)(س + 2)، والبسط 3(س + 2) + 2(س − 2) = 5س + 2.' },
+      { type:'mcq', section:'الكسور الجبرية', title:'اختصر المقدار:<div class="math-display">\\[\\frac{5}{\\text{س}+1}-\\frac{2}{\\text{س}-1}\\]</div>', options:['\\(\\frac{3\\text{س}+7}{\\text{س}^2-1}\\)','\\(\\frac{3\\text{س}-7}{\\text{س}^2-1}\\)','\\(\\frac{7\\text{س}-3}{\\text{س}^2-1}\\)','\\(\\frac{3\\text{س}-7}{\\text{س}^2+1}\\)'], correct:1, explain:'البسط بعد توحيد المقام: 5(س − 1) − 2(س + 1) = 3س − 7.' },
+      { type:'mcq', section:'تبسيط الكسور الجبرية', title:'اختصر الكسر الجبري:<div class="math-display">\\[\\frac{\\text{س}^2-49}{\\text{س}-7}\\]</div>', options:['\\(\\text{س}-7\\)','\\(\\text{س}+7\\)','\\(\\text{س}^2+7\\)','\\(7\\text{س}\\)'], correct:1, explain:'س² − 49 فرق بين مربعين ويساوي (س − 7)(س + 7)، وبعد الاختصار يتبقى س + 7.' },
+      { type:'mcq', section:'تبسيط الكسور الجبرية', title:'أوجد أبسط صورة:<div class="math-display">\\[\\frac{4\\text{س}^2-12\\text{س}+9}{2\\text{س}-3}\\]</div>', options:['\\(2\\text{س}+3\\)','\\(2\\text{س}-3\\)','\\(4\\text{س}-3\\)','\\(2\\text{س}-6\\)'], correct:1, explain:'البسط يساوي (2س − 3)²؛ وبعد الاختصار يتبقى 2س − 3.' },
+      { type:'mcq', section:'تبسيط الكسور الجبرية', title:'اختصر:<div class="math-display">\\[\\frac{\\text{س}^2-4}{\\text{س}^2+4\\text{س}+4}\\]</div>', options:['\\(\\frac{\\text{س}+2}{\\text{س}-2}\\)','\\(\\frac{\\text{س}-2}{\\text{س}+2}\\)','\\(\\frac{\\text{س}-4}{\\text{س}+2}\\)','\\(\\frac{\\text{س}+2}{\\text{س}+4}\\)'], correct:1, explain:'نحلل البسط إلى (س − 2)(س + 2)، والمقام إلى (س + 2)²، ثم نختصر العامل المشترك.' },
+      { type:'mcq', section:'الكسور الجبرية', title:'أوجد أبسط صورة:<div class="math-display">\\[\\frac{2}{\\text{س}+3}+\\frac{3}{\\text{س}-3}\\]</div>', options:['\\(\\frac{5\\text{س}+3}{\\text{س}^2-9}\\)','\\(\\frac{5\\text{س}-3}{\\text{س}^2-9}\\)','\\(\\frac{\\text{س}+3}{\\text{س}^2-9}\\)','\\(\\frac{5\\text{س}+3}{\\text{س}^2+9}\\)'], correct:0, explain:'البسط بعد توحيد المقام: 2(س − 3) + 3(س + 3) = 5س + 3.' },
+      { type:'mcq', section:'قسمة الكسور الجبرية', title:'أوجد ناتج القسمة:<div class="math-display">\\[\\frac{4}{3\\text{س}}\\div\\frac{2}{9\\text{س}^2}\\]</div>', options:['\\(3\\text{س}\\)','\\(6\\text{س}\\)','\\(9\\text{س}\\)','\\(6\\text{س}^2\\)'], correct:1, explain:'نضرب الكسر الأول في مقلوب الثاني: 4/(3س) × 9س²/2 = 6س.' },
+      { type:'mcq', section:'حل المعادلات', title:'حل المعادلة:<div class="math-display">\\[\\frac{2}{\\text{س}-1}=\\frac{3}{\\text{س}+2}\\]</div>', options:['\\(5\\)','\\(6\\)','\\(7\\)','\\(8\\)'], correct:2, explain:'بالضرب التبادلي: 2(س + 2) = 3(س − 1)، ومنه 2س + 4 = 3س − 3، إذن س = 7.' },
+      { type:'mcq', section:'حل المعادلات', title:'أوجد قيمة س:<div class="math-display">\\[\\frac{2\\text{س}-3}{5}=\\frac{\\text{س}+4}{3}\\]</div>', options:['\\(25\\)','\\(27\\)','\\(29\\)','\\(31\\)'], correct:2, explain:'بالضرب التبادلي: 6س − 9 = 5س + 20، ومنه س = 29.' },
+      { type:'mcq', section:'حل المعادلات', title:'حل المعادلة:<div class="math-display">\\[\\frac{5}{\\text{س}+1}=1\\]</div>', options:['\\(3\\)','\\(4\\)','\\(5\\)','\\(6\\)'], correct:1, explain:'نضرب الطرفين في (س + 1)، فنحصل على 5 = س + 1، إذن س = 4.' },
+      { type:'mcq', section:'حل المعادلات', title:'أوجد قيمة س:<div class="math-display">\\[\\frac{2\\text{س}+1}{3}-\\frac{\\text{س}-2}{4}=5\\]</div>', options:['\\(8\\)','\\(9\\)','\\(10\\)','\\(12\\)'], correct:2, explain:'نضرب في 12: 4(2س + 1) − 3(س − 2) = 60، ومنه 5س = 50، إذن س = 10.' },
+      { type:'mcq', section:'حل المعادلات', title:'حل المعادلة:<div class="math-display">\\[\\frac{3}{\\text{س}-2}+\\frac{1}{2}=2\\]</div>', options:['\\(3\\)','\\(4\\)','\\(5\\)','\\(6\\)'], correct:1, explain:'ننقل 1/2: 3/(س − 2) = 3/2، وبالضرب التبادلي س − 2 = 2، إذن س = 4.' },
+      { type:'essay', section:'مسألة تطبيقية · السرعة والزمن', title:'تسير سيارة مسافة 120 كم بسرعة مقدارها س كم/ساعة. فإذا زادت سرعتها بمقدار 20 كم/ساعة، استطاعت قطع مسافة 150 كم في الزمن نفسه. أوجد السرعة الأصلية للسيارة، موضحًا خطوات الحل.', finalLabel:'السرعة الأصلية (كم/ساعة)', placeholder:'اكتب خطوات الحل هنا...', correctText:'80 كم/ساعة', accepted:[80], explain:'بما أن الزمن متساوٍ: 120/س = 150/(س + 20). بالضرب التبادلي 120(س + 20) = 150س، ومنه س = 80 كم/ساعة.' },
+      { type:'essay', section:'مسألة تطبيقية · الكسور', title:'إذا كان مقام كسر أكبر من بسطه بمقدار 6، فإذا أُضيف العدد 4 إلى البسط والعدد 2 إلى المقام أصبح الكسر الناتج مساويًا لـ <span class="math-inline">\\(\\frac{2}{3}\\)</span>. أوجد الكسر الأصلي، موضحًا خطوات الحل.', finalLabel:'الكسر الأصلي (مثال: 4/10)', placeholder:'اكتب خطوات الحل هنا...', correctText:'\\(\\frac{4}{10}=\\frac{2}{5}\\)', acceptedFraction:0.4, explain:'لنفرض أن البسط س والمقام س + 6. إذن (س + 4)/(س + 8) = 2/3. بالضرب التبادلي 3س + 12 = 2س + 16، ومنه س = 4؛ فالكسر هو 4/10 = 2/5.' },
+      { type:'essay', section:'مسألة تطبيقية · المعادلات', title:'إذا طُرح العدد نفسه من بسط ومقام الكسر <span class="math-inline">\\(\\frac{19}{31}\\)</span> فأصبح الناتج <span class="math-inline">\\(\\frac{1}{2}\\)</span>. أوجد العدد المطروح، موضحًا خطوات الحل.', finalLabel:'العدد المطروح', placeholder:'اكتب خطوات الحل هنا...', correctText:'7', accepted:[7], explain:'نفرض العدد المطروح ن: (19 − ن)/(31 − ن) = 1/2. بالضرب التبادلي 38 − 2ن = 31 − ن، ومنه ن = 7.' }
+    ];
+
+    const letters = ['أ','ب','ج','د'];
+    const state = { index:0, answers:Array(questions.length).fill(null), name:'' };
+    const $ = id => document.getElementById(id);
+    const welcome = $('welcome'), exam = $('exam'), results = $('results');
+
+    function answered(i) {
+      const q = questions[i], a = state.answers[i];
+      if (a === null) return false;
+      if (q.type === 'mcq') return Number.isInteger(a);
+      return Boolean((a.final || '').trim() || (a.work || '').trim());
+    }
+    function countAnswered() { return state.answers.filter((_,i) => answered(i)).length; }
+    function renderGrids() {
+      ['questionGrid','mobileQuestionGrid'].forEach(id => {
+        const root = $(id); root.innerHTML = '';
+        questions.forEach((q,i) => {
+          const b = document.createElement('button');
+          b.className = 'q-dot' + (i === state.index ? ' current' : '') + (answered(i) ? ' answered' : '');
+          b.textContent = i + 1; b.type='button'; b.setAttribute('aria-label','الانتقال إلى السؤال ' + (i+1));
+          b.addEventListener('click', () => { state.index=i; renderQuestion(); });
+          root.appendChild(b);
+        });
+      });
+      $('answeredCount').textContent = countAnswered();
+    }
+    function typesetMath(root) {
+      if (!root) return;
+      const run = () => {
+        if (!window.MathJax || !window.MathJax.typesetPromise) return;
+        try { window.MathJax.typesetClear([root]); } catch (e) {}
+        window.MathJax.typesetPromise([root]).catch(() => {});
+      };
+      if (window.MathJax && window.MathJax.startup && window.MathJax.startup.promise) {
+        window.MathJax.startup.promise.then(run).catch(() => {});
+      } else {
+        let attempts = 0;
+        const waitForMathJax = () => {
+          if (window.MathJax && window.MathJax.typesetPromise) run();
+          else if (attempts++ < 80) setTimeout(waitForMathJax, 100);
+        };
+        waitForMathJax();
+      }
+    }
+
+    function renderQuestion() {
+      const i = state.index, q = questions[i], a = state.answers[i];
+      $('qNumber').textContent = 'السؤال ' + (i+1) + ' من 20';
+      $('qTitle').innerHTML = q.title;
+      $('sectionChip').textContent = q.type === 'essay' ? 'سؤال مقالي' : q.section;
+      $('sectionChip').className = 'section-chip' + (q.type === 'essay' ? ' essay' : '');
+      const area = $('answerArea'); area.innerHTML = '';
+      if (q.type === 'mcq') {
+        const options = document.createElement('div'); options.className='options';
+        q.options.forEach((value,j) => {
+          const label = document.createElement('label');
+          label.className = 'option' + (a === j ? ' selected' : '');
+          label.innerHTML = `<input type="radio" name="answer${i}" value="${j}" ${a===j?'checked':''}><span class="option-letter">${letters[j]}</span><span class="option-text" dir="auto">${value}</span>`;
+          label.addEventListener('click', () => { state.answers[i]=j; renderQuestion(); });
+          options.appendChild(label);
+        });
+        area.appendChild(options);
+      } else {
+        const box = document.createElement('div'); box.className='essay-box';
+        const workLabel = document.createElement('label'); workLabel.textContent='خطوات الحل';
+        const work = document.createElement('textarea'); work.placeholder=q.placeholder; work.value=a?.work || ''; work.setAttribute('aria-label','خطوات الحل');
+        work.addEventListener('input', () => { const old=state.answers[i] || {}; state.answers[i]={...old,work:work.value}; updateProgressOnly(); });
+        const finalWrap = document.createElement('div'); finalWrap.className='answer-final';
+        const finalLabel = document.createElement('label'); finalLabel.textContent='الإجابة النهائية'; finalLabel.style.marginTop='2px';
+        const final = document.createElement('input'); final.type='text'; final.value=a?.final || ''; final.placeholder=q.finalLabel; final.setAttribute('aria-label',q.finalLabel);
+        final.addEventListener('input', () => { const old=state.answers[i] || {}; state.answers[i]={...old,final:final.value}; updateProgressOnly(); });
+        box.append(workLabel,work,finalWrap); finalWrap.append(finalLabel,final); area.appendChild(box);
+      }
+      $('progressFill').style.width = ((i+1)/questions.length*100)+'%';
+      $('progressText').textContent = `السؤال ${i+1} من 20`;
+      $('prevBtn').disabled = i===0;
+      $('nextBtn').hidden = i===questions.length-1;
+      $('finishBtn').hidden = i!==questions.length-1;
+      renderGrids();
+      typesetMath($('question-main') || $('answerArea').parentElement);
+    }
+    function updateProgressOnly() {
+      $('answeredCount').textContent=countAnswered();
+      renderGrids();
+    }
+    function normalizeDigits(value) {
+      return String(value || '').replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/٫/g,'.').replace(/٬/g,'').replace(/،/g,'').trim();
+    }
+    function essayCorrect(q, answer) {
+      const s = normalizeDigits(answer);
+      if (!s) return false;
+      if (q.acceptedFraction !== undefined) {
+        const frac = s.match(/(-?\d+(?:\.\d+)?)\s*[\/⁄÷]\s*(-?\d+(?:\.\d+)?)/);
+        if (frac) {
+          const den=Number(frac[2]);
+          if (den !== 0 && Math.abs(Number(frac[1])/den-q.acceptedFraction)<0.000001) return true;
+        }
+        const nums=s.match(/-?\d+(?:\.\d+)?/g) || [];
+        return nums.some(n => Math.abs(Number(n)-q.acceptedFraction)<0.000001);
+      }
+      const nums=s.match(/-?\d+(?:\.\d+)?/g) || [];
+      return nums.some(n => Math.abs(Number(n)-q.accepted[0])<0.000001);
+    }
+    function evaluate(i) {
+      const q=questions[i], a=state.answers[i];
+      if (!a) return false;
+      if (q.type==='mcq') return a===q.correct;
+      return essayCorrect(q,a.final || '');
+    }
+    function answerDescription(i) {
+      const q=questions[i], a=state.answers[i];
+      if (!answered(i)) return 'لم تتم الإجابة';
+      if (q.type==='mcq') return letters[a] + ') ' + q.options[a];
+      return (a.final || 'لم تُكتب إجابة نهائية') + (a.work?.trim() ? ' · تم إرفاق خطوات الحل' : '');
+    }
+    function correctDescription(q) { return q.type==='mcq' ? letters[q.correct] + ') ' + q.options[q.correct] : q.correctText; }
+    function finishExam() {
+      const missing=questions.length-countAnswered();
+      const msg = missing ? `بقيت ${missing} أسئلة دون إجابة. هل تريد إنهاء الاختبار؟` : 'هل أنت متأكد من تسليم إجاباتك؟ لن تتمكن من تعديلها بعد التسليم.';
+      if (!window.confirm(msg)) return;
+      let score=0;
+      questions.forEach((q,i) => { if (evaluate(i)) score++; });
+      showResults(score);
+    }
+    function showResults(score) {
+      exam.hidden=true; results.hidden=false;
+      const name=state.name.trim() || 'الطالب';
+      $('resultGreeting').textContent = score===20 ? 'ممتاز! نتيجة كاملة 🎉' : score>=15 ? 'أحسنت يا '+name+'!' : 'واصل التدريب يا '+name;
+      $('scoreNumber').textContent=score;
+      $('scoreCircle').style.setProperty('--score',(score/20*100)+'%');
+      $('resultMessage').textContent = score===20 ? 'أجبت عن جميع الأسئلة إجابة صحيحة.' : `حصلت على ${score} من 20. راجع الحلول وتعلّم من أخطائك.`;
+      $('correctCount').textContent=score;
+      $('wrongCount').textContent=20-score;
+      $('reviewName').textContent=name;
+      const list=$('reviewList'); list.innerHTML='';
+      questions.forEach((q,i) => {
+        const ok=evaluate(i), card=document.createElement('article'); card.className='review-card '+(ok?'correct':'wrong');
+        const title=document.createElement('div'); title.className='review-q'; title.textContent=`${i+1}. `; title.insertAdjacentHTML('beforeend',q.title);
+        const your=document.createElement('div'); your.className='review-detail'; your.textContent='إجابتك: '+answerDescription(i);
+        const correct=document.createElement('div'); correct.className='review-detail';
+        correct.innerHTML='الإجابة الصحيحة: <span class="review-answer"></span>'; correct.querySelector('span').innerHTML=correctDescription(q);
+        const explain=document.createElement('div'); explain.className='review-explain'; explain.textContent=q.explain;
+        card.append(title,your,correct,explain);
+        if(q.type==='essay' && state.answers[i]?.work?.trim()) {
+          const work=document.createElement('div'); work.className='review-detail'; work.textContent='خطوات الحل المكتوبة: '+state.answers[i].work; card.appendChild(work);
+        }
+        list.appendChild(card);
+      });
+      typesetMath(list);
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+    function toast(message) { const t=$('toast'); t.textContent=message; t.style.display='block'; setTimeout(()=>t.style.display='none',2300); }
+
+    $('startBtn').addEventListener('click',()=>{
+      state.name=$('studentName').value.trim();
+      $('studentDisplay').textContent=state.name || 'غير محدد';
+      welcome.hidden=true; exam.hidden=false; renderQuestion(); window.scrollTo({top:0,behavior:'smooth'});
+    });
+    $('prevBtn').addEventListener('click',()=>{ if(state.index>0){state.index--;renderQuestion();} });
+    $('nextBtn').addEventListener('click',()=>{ if(state.index<questions.length-1){state.index++;renderQuestion();} });
+    $('finishBtn').addEventListener('click',finishExam);
+    $('printBtn').addEventListener('click',()=>window.print());
+    $('copyBtn').addEventListener('click',async()=>{
+      const score=$('scoreNumber').textContent;
+      const text=`نتيجة اختبار الرياضيات للصف التاسع\nالطالب: ${state.name || 'غير محدد'}\nالدرجة: ${score}/20\nالإجابات الصحيحة: ${score}\nالإجابات الخاطئة: ${20-Number(score)}`;
+      try { await navigator.clipboard.writeText(text); toast('تم نسخ النتيجة.'); }
+      catch(e) { const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); toast('تم نسخ النتيجة.'); }
+    });
+    $('restartBtn').addEventListener('click',()=>{
+      if(!window.confirm('هل تريد بدء محاولة جديدة؟ ستُمسح إجابات المحاولة الحالية.')) return;
+      state.index=0; state.answers=Array(questions.length).fill(null); results.hidden=true; welcome.hidden=false; $('studentName').value=state.name; window.scrollTo({top:0,behavior:'smooth'});
+    });
+  </script>
+</body>
+</html>
